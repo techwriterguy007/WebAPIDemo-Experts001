@@ -1,0 +1,44 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+    Name :
+<input type="text" id="txtName" />
+<br />
+    Class:
+<input type="text" id="txtClass" />
+<br />
+<br />
+<br />
+<input type="button" id="btnGet" value="Get Updated Students" />
+
+<table id="students">
+</table>
+
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+<script type="text/javascript">
+    $(function () {
+        $("#btnGet").click(function () {
+            var student = '{Name: "' + $("#txtName").val() + '", Class:"' + $("#txtClass").val() + '" }';
+            console.log(student);
+            $.ajax({
+                type: "POST",
+                url: "/api/Student/AddStudent",
+                data: student,
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (response) {
+                     $("#students").append("<tr><td>Student Lists JSON Returned</td></tr>");
+                     $.each(response, function(key, value) {
+                        $("#students").append("<tr><td>"+JSON.stringify(value)+"</td></tr>");
+                     })
+                },
+                failure: function (response) {
+                    alert(response.responseText);
+                },
+                error: function (response) {
+                    alert(response.responseText);
+                }
+            });
+        });
+    });
+</script>
